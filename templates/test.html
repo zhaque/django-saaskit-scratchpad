@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+{% block head %}
+<style>
+
+.scratchpad
+{
+border-style: solid;
+border-size:1px;
+border-color:#000000;
+margin: 2px;
+}
+</style>
+
+<script>
+function addToScratchPad(id)
+{
+	obj = document.getElementById(id);
+	frm = document.getElementById("scratchpad_add_"+id);
+	frm.data.value = obj.innerHTML;
+	frm.submit();
+
+}
+</script>
+{% endblock %}
+{% block body %}
+
+<h1>TEST</h1>
+
+{% load scratchpad_tags  %}
+
+
+
+<div id="test_1" class="scratchpad">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id nulla sem. Proin molestie nibh a ipsum adipiscing pulvinar. Sed ac ligula in nisl vehicula ornare. Vivamus a vulputate libero. Duis est magna, convallis ac iaculis non, vestibulum non diam. Mauris nec orci ac lacus ultricies lobortis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean elit odio, elementum in mollis quis, rhoncus id quam. Vivamus augue tortor, interdum sit amet porta nec, volutpat eget lacus. Pellentesque at dictum urna. Mauris adipiscing nisi eget augue porta luctus. Donec nec dui id massa vulputate varius. Sed ac tempus nibh. Proin ornare laoreet sagittis.
+</div>
+{% get_add_to_html 'test_1' %}
+
+<div id="test_2" class="scratchpad">
+Curabitur iaculis nulla at mauris tempus tristique. Sed luctus sem elementum leo tempor aliquet. Vestibulum a rhoncus tellus. Nam lobortis libero sapien. Pellentesque faucibus tortor vitae sapien pellentesque vel eleifend neque egestas. Nullam egestas venenatis tristique. Vivamus ante diam, dignissim vitae laoreet et, volutpat eu ante. Aliquam dapibus turpis vitae eros gravida ultrices. Cras gravida placerat justo. Duis risus dui, bibendum rutrum feugiat sed, venenatis non arcu. Maecenas eu neque sed nulla ultrices porttitor. Suspendisse sit amet purus nec elit ultrices aliquet sed eu magna. Sed vulputate nisi id nibh consectetur auctor. Ut commodo, nibh aliquam laoreet ullamcorper, nulla ipsum dignissim metus, eu feugiat turpis nisi a nunc. Aenean mi massa, venenatis vel blandit ac, scelerisque sed elit. Pellentesque aliquet placerat leo, at ornare erat faucibus id. Proin in arcu mi. Phasellus gravida ligula nec sem iaculis ac lacinia diam placerat. Quisque vitae magna vel ipsum ullamcorper bibendum a et massa. Cras nec dignissim felis.
+</div>
+{% get_add_to_html 'test_2' %}
+
+<div id="test_3" class="scratchpad">
+In hac habitasse platea dictumst. Nulla pellentesque rhoncus quam non malesuada. Maecenas faucibus ligula ut tellus vulputate interdum. Integer et ligula quis nibh cursus sodales. Integer ac neque ut dui semper imperdiet. Donec lacinia ante ut tortor sodales varius tempus nulla venenatis. Aliquam non ante eu orci tincidunt pulvinar. Curabitur sagittis consectetur rhoncus. Quisque vel nulla non orci feugiat sodales. Suspendisse quam eros, malesuada eget euismod vel, sagittis at purus. Proin vel tempus lorem. Etiam ut turpis tristique dui scelerisque interdum a a odio. Cras malesuada nisl sit amet tellus vestibulum nec porta tortor luctus. In nec magna metus, ut ultrices ante. Curabitur mollis commodo vehicula. In fringilla quam in ipsum convallis consectetur. Curabitur adipiscing mauris faucibus tellus dapibus ut scelerisque neque cursus.
+</div>
+{% get_add_to_html 'test_3' %}
+
+<div id="test_4" class="scratchpad">
+<img src="http://www.google.com/intl/en_ALL/images/logo.gif">
+</div>
+{% get_add_to_html 'test_4' %}
+{% endblock %}

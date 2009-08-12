@@ -1,0 +1,22 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<h1>Add to Scratchpad</h1>
+	<form action="{% url scratchpad-save %}" method="POST" id="addto_scratchpad">
+	<table>
+	<tr><th><label for="scratch_content">Content:</label></th>
+	<td id="scratch_content">&nbsp;</td></tr>
+
+	{{ form }}
+	<tr>
+	<th><label for="comment_id">Comment:</label></th>
+	<td>{{ comment }} </td></tr>
+	</table>
+	<p><input type="submit" value="Submit" class="todo-button"></p>
+	<script>
+	data = document.getElementById("addto_scratchpad").notes.value;
+	document.getElementById("scratch_content").innerHTML = data;
+	</script>
+	</form>
+{% endblock %}

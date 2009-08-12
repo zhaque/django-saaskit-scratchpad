@@ -1,8 +1,120 @@
-Django Scratchpad
+                           Django Scratchpad
+                           ==========================
 
-Hi,
-Please remove this lines and update the README like other projects as you see i.e. django-muaccounts or django-saas-kit etc 
-this is the documentation as we discussed in elance.
+Author: Javier Der Derian <javierder@gmail.com>
+Date: 2009/09/12
 
-Thanks
- 
+THIS IS A WORK IN PROGRESS, IT'S NOT FINAL AND EVERYTHING
+IS OPEN TO MODIFICATIONS
+
+Django-scratchpad is an applitation for managing scratchpads in
+a multi-user way.
+This application needs MuAccounts to be already installed.
+
+Table of Contents
+=================
+1 Installation
+2 Models
+3 Views
+4 URLs
+5 Template tags
+6 Templates
+7 Example code
+8 Bugs and omissions
+9 License
+
+
+1 Installation
+~~~~~~~~~~~~~~
+  Copy or symlink `scratchpad/' subdirectory to Python path.
+  Copy or symlink 'templates/' subdirectory to project templates folder.
+
+  In order to use application, add `scratchpad' to INSTALLED_APPS in
+  Django project `settings.py' file.
+
+  Add:
+    (r'^scratchpad/', include('scratchpad.urls'))
+
+  in your urls.py
+
+
+  run python manage.py syncdb
+
+
+
+2 Models
+~~~~~~~~
+  Application defines 3 models.
+  ScratchPad, associated with a muaccount.
+  Item, stores the scratch'ed data
+  ItemComment, for comments in the item.
+
+
+
+3 Views
+~~~~~~~
+	[[ working on it]]
+
+4 URLs
+~~~~~~
+
+	scratchpad/list
+		List all the scratchpads associated with the muaccount, and shows a new scratchpad form
+
+
+	scratchpad/new
+		Shows only the new scratchpad form
+
+    scratchpad/<scratch_id>
+    	List all items in a scratchpad
+
+
+	scratchpad/test
+		Shows a test page with text and images to test the "add to scratchpad" template tag.
+
+5 Template Tag
+~~~~~~~~~~~~~~
+	In scratchpad/templatetags is the, so far, basic template tag.
+
+	It's used by, first, adding
+	{% load scratchpad_tags  %}
+	in your template
+
+	And then adding
+	{% get_add_to_html 'HTML_ITEM_ID' %}
+
+	HTML_ITEM_ID is the id of the element you wish to be added into the scratchpad.
+
+	This will generate a link that will send, via POST, the HTML_ITEM_ID content to our
+	"add to scratchpad" form.
+
+	Your page where you'll be showing this template needs to have this code in <head>
+	<script>
+	function addToScratchPad(id)
+	{
+		obj = document.getElementById(id);
+		frm = document.getElementById("scratchpad_add_"+id);
+		frm.data.value = obj.innerHTML;
+		frm.submit();
+
+	}
+	</script>
+
+6 Templates
+~~~~~~~~~~~
+	[[ working on it]]
+
+
+7 Example code
+~~~~~~~~~~~~~~
+  Example usage and templates are available as `django-scratchpad'
+  project at [http://github.com/CrowdSense/django-scratchpad/]
+
+8 Bugs and omissions
+~~~~~~~~~~~~~~~~~~~~
+  - There is no `setup.py' script for automated installation.
+
+9 License
+~~~~~~~~~~
+  This project is dual-licensed on terms of MIT (MIT-LICENSE.txt) and
+  GPL (GPL-LICENSE.txt) licenses.

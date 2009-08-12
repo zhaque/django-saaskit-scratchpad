@@ -1,0 +1,19 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<h1>Your ScratchPads</h1>
+
+<ul>
+{% for pad in pads %}
+<li><a href="{% url scratchpad-scratchpad_view pad.id %}">{{pad.title}}</a></li>
+{% endfor %}
+</ul>
+
+<h1>New ScratchPad</h1>
+	<form action="{% url scratchpad-new %}" method="POST">
+	<table>{{ form }}</table>
+	<p><input type="submit" value="Submit" class="todo-button"></p>
+	</form>
+
+{% endblock %}

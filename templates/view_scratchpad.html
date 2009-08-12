@@ -1,0 +1,16 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<h1>ScratchPad: {{pad}}</h1>
+
+{% for item in pad.item_set.all %}
+<h3><a href="{% url scratchpad-item item.id%}">{{ item }}</a></h3>
+{% autoescape off %}
+<div>{{item.notes}}</div>
+{% endautoescape %}
+<hr>
+
+{% endfor %}
+
+{% endblock %}
