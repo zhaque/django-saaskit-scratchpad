@@ -1,5 +1,9 @@
 {% extends "main.html" %}
+
 {% load threadedcommentstags %}
+
+
+
 {% block head %}
 <script type="text/javascript">
 function show_reply_form(comment_id, url, person_name) {
@@ -32,43 +36,42 @@ function hide_reply_form(comment_id, url, person_name) {
 }
 </script>
 {% endblock %}
+
 {% block body %}
 
-<h1>ScratchPad: {{pad}}</h1>
-{% ifequal pad.author request.user %}
-<a href="{% url scratchpad-delete pad.id %}">Delete this scratchpad</a><br>
-{% endifequal %}
-<a href="{% url scratchpad-list%}">View scratchpads list</a>
-<hr>
-<a href="{% url todo-incomplete_tasks pad.tasks_list.id pad.tasks_list.slug %}">View scratchpad tasks</a>
-<hr>
+
+<h1>ScratchPad: <a href="{% url scratchpad-scratchpad_view item.scratchpad.id%}">{{item.scratchpad}}</a></h1>
+<h2>Item: {{item}}</h2>
+
+<a href="{% url todo-incomplete_tasks item.scratchpad.tasks_list.id item.scratchpad.tasks_list.slug %}">View tasks</a>
+
+{% autoescape off %}
+<div>{{item.notes}}</div>
+{% endautoescape %}
+
+<a href="{% url todo-incomplete_tasks item.scratchpad.tasks_list.id item.scratchpad.tasks_list.slug %}">View tasks</a>
+
 {% for item in pad.item_set.all %}
 <h3><a href="{% url scratchpad-item item.id%}">{{ item }}</a></h3>
 {% autoescape off %}
 <div>{{item.notes}}</div>
 {% endautoescape %}
-{% ifequal pad.author request.user %}
-<a href="{% url scratchpad-item-delete item.id %}">Delete item</a>
-{% endifequal %}
 <hr>
 
 {% endfor %}
-<hr>
-<a href="{% url todo-incomplete_tasks pad.tasks_list.id pad.tasks_list.slug %}">View scratchpad tasks</a>
 
-
-    <h3>Comments on This Scratchpad:</h3>
-    {% get_threaded_comment_tree for pad as tree %}
+    <h3>Comments on This Item:</h3>
+    {% get_threaded_comment_tree for item as tree %}
     {% for comment in tree %}
         <div style="margin-left: {{ comment.depth }}em;" class="comment">
             {{ comment.user }} said:<br/>
             {% auto_transform_markup comment %}
         </div>
-		<a id="c{{ comment.id }}" href="javascript:show_reply_form('c{{ comment.id }}','{% get_comment_url pad comment %}','{{ comment.user }}')">Reply</a>
+		<a id="c{{ comment.id }}" href="javascript:show_reply_form('c{{ comment.id }}','{% get_comment_url item comment %}','{{ comment.name }}')">Reply</a>
 
     {% endfor %}
     <p>Reply to Original:</p>
-    <form method="POST" action="{% get_comment_url pad %}">
+    <form method="POST" action="{% get_comment_url item %}">
         <ul>
         {% get_threaded_comment_form as form %}
             {{ form.as_ul }}

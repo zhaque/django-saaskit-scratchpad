@@ -10,22 +10,19 @@ class AddScratchPadForm(ModelForm):
 
     class Meta:
         model = ScratchPad
-        exclude = ('account','author')
+        exclude = ('account','author','tasks_list')
 
 
 class AddToScratchPad(ModelForm):
 
-    def __init__(self, data, *args, **kwargs):
+    def __init__(self, data, muaccount, *args, **kwargs):
         super(AddToScratchPad, self).__init__(*args, **kwargs)
         self.fields['notes'].initial = data
         self.fields['notes'].widget = widgets.HiddenInput()
+        self.fields['scratchpad'].queryset = ScratchPad.objects.filter(account=muaccount)
 
 
-        self.fields.update
 
-    def validate(self):
-        return True
 
     class Meta:
         model = Item
-        #exclude = ('notes',)

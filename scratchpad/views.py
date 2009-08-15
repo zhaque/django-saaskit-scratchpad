@@ -10,7 +10,7 @@ from django import forms
 from muaccounts  import models as muamodels
 from scratchpad import models
 from scratchpad.forms import AddScratchPadForm, AddToScratchPad
-
+from todo import models as todomodels
 
 @login_required
 def view_list(request):
@@ -35,6 +35,12 @@ def new_scratchpad(request):
         item = form.save(commit=False)
         item.account=request.muaccount
         item.author=request.user
+        newtodo = todomodels.List()
+        newtodo.name = item.title
+        newtodo.slug = "Tasks for scratchpad %s" % item.title
+        newtodo.account = request.muaccount
+        newtodo.save()
+        item.tasks_list = newtodo
         item.save()
         return HttpResponseRedirect(reverse('scratchpad-list'))
 
@@ -43,18 +49,37 @@ def new_scratchpad(request):
     form = AddScratchPadForm()
     return render_to_response("scratchpad/new_scratchpad.html", locals())
 
+def del_item(request, item_id):
+
+    if request.POST:
+        item = get_object_or_404(models.Item,id=item_id)
+        pad_id = item.scratchpad.id
+        item.delete()
+
+        return HttpResponseRedirect(reverse('scratchpad-list'))
+
+    else:
+        item = get_object_or_404(models.Item,id=item_id)
+
+        return render_to_response("scratchpad/confirmdel_scratchpad_item.html", locals())
+
+def scratchpad_del(request, scratch_id):
+    if request.POST:
+        pad = get_object_or_404(models.ScratchPad,id=scratch_id)
+        pad.delete()
+
+        return HttpResponseRedirect(reverse('scratchpad-list'))
+
+    else:
+        pad = get_object_or_404(models.ScratchPad,id=scratch_id)
+
+        return render_to_response("scratchpad/confirmdel_scratchpad.html", locals())
+
 def scratchpad(request, scratch_id):
 
     pad = get_object_or_404(models.ScratchPad,id=scratch_id)
 
-    #
-    #
-    print dir(pad)
-    #
-
-
     return render_to_response("scratchpad/view_scratchpad.html", locals())
-
 
 def add_to(request):
 
@@ -62,10 +87,8 @@ def add_to(request):
     if request.POST:
         data = request.POST['data']
 
-        form = AddToScratchPad(data)
+        form = AddToScratchPad(data, request.muaccount)
         comment = forms.CharField(widget=forms.Textarea).widget.render("comment","")
-
-
 
         return render_to_response("scratchpad/addto_scratchpad.html", locals())
     else:
@@ -74,8 +97,10 @@ def add_to(request):
 def save(request):
 
     if request.POST:
-        form = AddToScratchPad(request.POST['notes'],request.POST)
-        item = form.save(commit=False)
+        item = models.Item()
+        item.notes = request.POST['notes']
+        item.title = request.POST['title']
+        item.scratchpad = models.ScratchPad.objects.get(id=request.POST['scratchpad'])
         item.save()
         strcomment = request.POST['comment']
         if strcomment != "":
@@ -91,7 +116,11 @@ def save(request):
         return HttpResponseRedirect(reverse('scratchpad-list'))
 
 def item(request, item_id):
-    pass
+
+    item = get_object_or_404(models.Item,id=item_id)
+
+
+    return render_to_response("scratchpad/view_scratchpad_item.html", locals())
 
 def test(request):
 

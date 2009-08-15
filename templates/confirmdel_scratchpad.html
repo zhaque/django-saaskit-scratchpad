@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+
+{% block body %}
+
+<h1>Confirm deletion of ScratchPad "{{pad}}"</h1>
+<h2>This will delete all it's notes and comments.<br>The action is permanent and can't be undone.</h2>
+<form method="post" action="{% url scratchpad-delete pad.id %}">
+<input type="button" name="cancel" value="Cancel" onclick="document.location.href='{% url scratchpad-scratchpad_view pad.id %}'";>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="del" value="Delete">
+</form>
+
+
+{% endblock %}
