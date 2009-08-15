@@ -1,5 +1,8 @@
 {% extends "main.html" %}
 {% load threadedcommentstags %}
+{% load oembed_tags %}
+
+
 {% block head %}
 <script type="text/javascript">
 function show_reply_form(comment_id, url, person_name) {
@@ -45,7 +48,9 @@ function hide_reply_form(comment_id, url, person_name) {
 {% for item in pad.item_set.all %}
 <h3><a href="{% url scratchpad-item item.id%}">{{ item }}</a></h3>
 {% autoescape off %}
-<div>{{item.notes}}</div>
+
+<div>{% oembed %}{{item.notes}}{% endoembed %}</div>
+
 {% endautoescape %}
 {% ifequal pad.author request.user %}
 <a href="{% url scratchpad-item-delete item.id %}">Delete item</a>
