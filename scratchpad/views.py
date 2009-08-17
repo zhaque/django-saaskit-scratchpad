@@ -31,6 +31,7 @@ def view_list(request):
 
 @login_required
 def new_scratchpad(request):
+    """ Shows new scratchpad form and does the actual form processing """
 
     if request.POST:
         form = AddScratchPadForm(request.POST)
@@ -54,6 +55,7 @@ def new_scratchpad(request):
 
 @login_required
 def del_item(request, item_id):
+    """Delete an item from a scratchpad """
 
     if request.POST:
         item = get_object_or_404(models.Item,id=item_id)
@@ -69,6 +71,8 @@ def del_item(request, item_id):
 
 @login_required
 def scratchpad_del(request, scratch_id):
+    """ Delete a scratchpad """
+
     if request.POST:
         pad = get_object_or_404(models.ScratchPad,id=scratch_id)
         pad.delete()
@@ -82,14 +86,14 @@ def scratchpad_del(request, scratch_id):
 
 @login_required
 def scratchpad(request, scratch_id):
-
+    """ Shows list items in a scratchpad """
     pad = get_object_or_404(models.ScratchPad,id=scratch_id)
 
     return render_to_response("scratchpad/view_scratchpad.html", locals())
 
 @login_required
 def add_to(request):
-
+    """ Show add-to form"""
 
     if request.POST:
         data = request.POST['data']
@@ -103,6 +107,7 @@ def add_to(request):
 
 @login_required
 def save(request):
+    """ Save item sent via add-to form """
 
     if request.POST:
         item = models.Item()
@@ -147,13 +152,14 @@ def save(request):
 
 @login_required
 def item(request, item_id):
-
+    """ Shows scratchpad item details """
     item = get_object_or_404(models.Item,id=item_id)
 
 
     return render_to_response("scratchpad/view_scratchpad_item.html", locals(), context_instance=RequestContext(request))
 
 def test(request):
+    """ Test page of add-to scratchpad tag """
 
     return render_to_response("scratchpad/test.html", locals(), context_instance=RequestContext(request))
 
