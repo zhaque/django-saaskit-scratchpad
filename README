@@ -23,7 +23,8 @@ Table of Contents
 5 Template tags
 6 Templates
 7 Example code
-8 Bugs and omissions
+8 Integration with cs-kit
+9 Bugs and omissions
 
 
 1 Installation
@@ -148,6 +149,40 @@ Table of Contents
   Example usage and templates are available as `django-scratchpad'
   project at [http://github.com/CrowdSense/django-scratchpad/]
 
-8 Bugs and omissions
-~~~~~~~~~~~~~~~~~~~~
+8 Integration with cs-kit
+~~~~~~~~~~~~~~~~~~~~~~~~~
+  No modifications have been done in cs-kit.
+  All integration was done in django-scratchpad with modifications
+  in django-todo and django-threaddedcomments
+  
+  django-todo:
+  	* Template modifications:
+  		* use body block instead of content block
+  		* use head instead of extrahead
+  		* Some links have been added to allow scratchpad<->tasks navegation
+  		
+  	* Views/Models/Forms modifications:
+  		* models.List now uses
+  			account = models.ForeignKey(muamodels.MUAccount)
+  		  instead of
+  		  	group = models.ForeignKey(Group)
+  		  to group tasks and tasks list.
+  		  
+  		* All security checkings in view now check if current user is
+  		  in a member or the owner of the active muaccoubn
+  		
+  		* All forms now filter available users to assign task to members
+  		  and owner of the muaccount.
+  		  
+  		  
+  django-threadedcomments:
+  	  	* Template modifications:
+  	  	   * threadedcomments_base.html
+  	  	   	 * Extends base.main
+  	  	   	 * Use body block instead of content block
+ 
+ 
 
+9 Bugs and omissions
+~~~~~~~~~~~~~~~~~~~~
+ -----

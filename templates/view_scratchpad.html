@@ -55,7 +55,7 @@ function hide_reply_form(comment_id, url, person_name) {
 {% endautoescape %}
 
 {% ifequal pad.author request.user %}
-{% get_comment_count for item as item_comments %} Comments #: {{ item_comments }}
+{% get_comment_count for item as item_comments %} Comments: {{ item_comments }}
 <br>
 <a href="{% url scratchpad-item-delete item.id %}">Delete item</a>
 {% endifequal %}

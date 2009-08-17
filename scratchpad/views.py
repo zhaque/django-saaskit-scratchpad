@@ -12,6 +12,7 @@ from muaccounts  import models as muamodels
 from scratchpad import models
 from scratchpad.forms import AddScratchPadForm, AddToScratchPad
 from todo import models as todomodels
+from threadedcomments import models as tmodels
 
 @login_required
 def view_list(request):
@@ -140,11 +141,18 @@ def save(request):
         strcomment = request.POST['comment']
         if strcomment != "":
 
-            comment = models.ItemComment()
-            comment.item = item
-            comment.text = strcomment
-            comment.author = request.user
+            #comment = models.ItemComment()
+            #comment.item = item
+            #comment.text = strcomment
+            #comment.author = request.user
+            #comment.save()
+
+            comment = tmodels.ThreadedComment()
+            comment.content_object = item
+            comment.user = request.user
+            comment.comment = strcomment
             comment.save()
+
 
         return HttpResponseRedirect(reverse('scratchpad-scratchpad_view',args=[item.scratchpad.id]))
     else:
