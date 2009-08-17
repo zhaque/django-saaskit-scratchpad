@@ -20,6 +20,7 @@ class AddToScratchPad(ModelForm):
         self.fields['notes'].initial = data
         self.fields['notes'].widget = widgets.HiddenInput()
         self.fields['scratchpad'].queryset = ScratchPad.objects.filter(account=muaccount)
+        self.fields['scratchpad'].label = "Scratchpad"
 
 
 

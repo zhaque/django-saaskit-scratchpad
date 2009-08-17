@@ -8,6 +8,38 @@
 	<tr><th><label for="scratch_content">Content:</label></th>
 	<td id="scratch_content">&nbsp;</td></tr>
 
+
+	<tr><th colspan="2"><label for="">
+
+	<a href="#" onclick="selscratchpad(2); return false;">Select scratchpad</a>
+	|
+	<a href="#" onclick="selscratchpad(1); return false;">New Scratchpad</a>
+	</label>
+	<script>
+	function selscratchpad(t)
+	{
+		if(t == 1)
+		{
+			document.getElementById("new_scratchpad").style.display = "";
+			document.getElementById("id_scratchpad").parentNode.parentNode.style.display = "none";
+			document.getElementById("scratchpad_type").value = "new";
+		}
+		else
+		{
+
+			document.getElementById("new_scratchpad").style.display = "none";
+			document.getElementById("id_scratchpad").parentNode.parentNode.style.display = "";
+			document.getElementById("scratchpad_type").value = "select";
+		}
+	}
+	</script>
+	<input type="hidden" id="scratchpad_type" name="scratchpad_type" value="select">
+	</th>
+	</tr>
+
+	<tr id="new_scratchpad" style="display:none"><th><label for="">Scratchpad:</label></th>
+	<td id=""><input type="text" name="new_scratchpad"></td></tr>
+
 	{{ form }}
 	<tr>
 	<th><label for="comment_id">Comment:</label></th>
@@ -17,6 +49,9 @@
 	<script>
 	data = document.getElementById("addto_scratchpad").notes.value;
 	document.getElementById("scratch_content").innerHTML = data;
+
+	data = document.getElementById("addto_scratchpad").notes.value;
+
 	</script>
 	</form>
 {% endblock %}

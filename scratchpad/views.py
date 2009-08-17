@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django import forms
+from django.template import RequestContext
 
 
 
@@ -26,8 +27,9 @@ def view_list(request):
         pads = None
 
     form = AddScratchPadForm()
-    return render_to_response("scratchpad/list_scratchpads.html", locals())
+    return render_to_response("scratchpad/list_scratchpads.html", locals(), context_instance=RequestContext(request))
 
+@login_required
 def new_scratchpad(request):
 
     if request.POST:
@@ -35,6 +37,7 @@ def new_scratchpad(request):
         item = form.save(commit=False)
         item.account=request.muaccount
         item.author=request.user
+
         newtodo = todomodels.List()
         newtodo.name = item.title
         newtodo.slug = "Tasks for scratchpad %s" % item.title
@@ -47,8 +50,9 @@ def new_scratchpad(request):
 
 
     form = AddScratchPadForm()
-    return render_to_response("scratchpad/new_scratchpad.html", locals())
+    return render_to_response("scratchpad/new_scratchpad.html", locals(), context_instance=RequestContext(request))
 
+@login_required
 def del_item(request, item_id):
 
     if request.POST:
@@ -61,8 +65,9 @@ def del_item(request, item_id):
     else:
         item = get_object_or_404(models.Item,id=item_id)
 
-        return render_to_response("scratchpad/confirmdel_scratchpad_item.html", locals())
+        return render_to_response("scratchpad/confirmdel_scratchpad_item.html", locals(), context_instance=RequestContext(request))
 
+@login_required
 def scratchpad_del(request, scratch_id):
     if request.POST:
         pad = get_object_or_404(models.ScratchPad,id=scratch_id)
@@ -75,12 +80,14 @@ def scratchpad_del(request, scratch_id):
 
         return render_to_response("scratchpad/confirmdel_scratchpad.html", locals())
 
+@login_required
 def scratchpad(request, scratch_id):
 
     pad = get_object_or_404(models.ScratchPad,id=scratch_id)
 
     return render_to_response("scratchpad/view_scratchpad.html", locals())
 
+@login_required
 def add_to(request):
 
 
@@ -94,14 +101,37 @@ def add_to(request):
     else:
         return HttpResponseRedirect(reverse('scratchpad-list'))
 
+@login_required
 def save(request):
 
     if request.POST:
         item = models.Item()
         item.notes = request.POST['notes']
         item.title = request.POST['title']
-        item.scratchpad = models.ScratchPad.objects.get(id=request.POST['scratchpad'])
+
+        if request.POST['scratchpad_type'] == 'new':
+            print "es new"
+            spad = models.ScratchPad()
+            spad.title = request.POST['new_scratchpad']
+            spad.author = request.user
+            spad.account = request.muaccount
+
+            newtodo = todomodels.List()
+            newtodo.name = spad.title
+            newtodo.slug = "Tasks for scratchpad %s" % spad.title
+            newtodo.account = request.muaccount
+            newtodo.save()
+
+            spad.tasks_list = newtodo
+            spad.save()
+            item.scratchpad = spad
+        else:
+            print "es select"
+            item.scratchpad = models.ScratchPad.objects.get(id=request.POST['scratchpad'])
+
         item.save()
+
+
         strcomment = request.POST['comment']
         if strcomment != "":
 
@@ -115,14 +145,15 @@ def save(request):
     else:
         return HttpResponseRedirect(reverse('scratchpad-list'))
 
+@login_required
 def item(request, item_id):
 
     item = get_object_or_404(models.Item,id=item_id)
 
 
-    return render_to_response("scratchpad/view_scratchpad_item.html", locals())
+    return render_to_response("scratchpad/view_scratchpad_item.html", locals(), context_instance=RequestContext(request))
 
 def test(request):
 
-    return render_to_response("scratchpad/test.html", locals())
+    return render_to_response("scratchpad/test.html", locals(), context_instance=RequestContext(request))
 
