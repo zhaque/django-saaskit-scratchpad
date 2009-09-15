@@ -154,7 +154,7 @@ def scratchpad(request, scratch_id):
             request.user.message_set.create(message="New task \"%s\" has been added." % new_task.title )
             return HttpResponseRedirect(request.path)
         else:
-            print form1.errors
+            #print form1.errors
             #for error in form1.errors:
              #   request.user.message_set.create(message=error[1])           
     else:      
@@ -244,7 +244,7 @@ def save(request):
         item.title = request.POST['title']
 
         if request.POST['scratchpad_type'] == 'new':
-            print "es new"
+            #print "es new"
             spad = models.ScratchPad()
             spad.title = request.POST['new_scratchpad']
             spad.author = request.user
@@ -260,7 +260,7 @@ def save(request):
             spad.save()
             item.scratchpad = spad
         else:
-            print "es select"
+            #print "es select"
             item.scratchpad = models.ScratchPad.objects.get(id=request.POST['scratchpad'])
 
         item.save()
