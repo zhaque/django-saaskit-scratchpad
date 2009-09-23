@@ -154,7 +154,7 @@ def scratchpad(request, scratch_id):
             request.user.message_set.create(message="New task \"%s\" has been added." % new_task.title )
             return HttpResponseRedirect(request.path)
         else:
-            #print form1.errors
+            print form1.errors
             #for error in form1.errors:
              #   request.user.message_set.create(message=error[1])           
     else:      
