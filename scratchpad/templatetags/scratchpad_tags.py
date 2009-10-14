@@ -11,7 +11,7 @@ register = Library()
 def get_add_to_html(html_id):
 
     code = "<form action='%s' method='post' id='scratchpad_add_%s'>" % (reverse('scratchpad-addto'),html_id)
-    code += "<a href='#' onclick='addToScratchPad(\"%s\");'>Add to Scratchpad</a>" % (html_id)
+    code += "<a href='#' onclick='addToScratchpad(\"%s\");'>Add to Scratchpad</a>" % (html_id)
     code +="<input type='hidden' name='data' value=''></form>"
 
     return code

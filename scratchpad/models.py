@@ -5,7 +5,7 @@ from todo import models as todomodels
 # Create your models here.
 
 
-class ScratchPad(models.Model):
+class Scratchpad(models.Model):
     title = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User)
@@ -21,7 +21,7 @@ class ScratchPad(models.Model):
 
 
 class Item(models.Model):
-    scratchpad = models.ForeignKey(ScratchPad)
+    scratchpad = models.ForeignKey(Scratchpad)
     title = models.CharField(max_length=200)
     notes = models.TextField()
 

@@ -40,7 +40,7 @@ function hide_reply_form(comment_id, url, person_name) {
 {% block body %}
 
 
-<h1>ScratchPad: <a href="{% url scratchpad-scratchpad_view item.scratchpad.id%}">{{item.scratchpad}}</a></h1>
+<h1>Scratchpad: <a href="{% url scratchpad-scratchpad_view item.scratchpad.id%}">{{item.scratchpad}}</a></h1>
 <h2>Item: {{item}}</h2>
 
 <a href="{% url todo-incomplete_tasks item.scratchpad.tasks_list.id item.scratchpad.tasks_list.slug %}">View tasks</a>

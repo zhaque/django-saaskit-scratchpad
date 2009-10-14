@@ -37,7 +37,7 @@ function hide_reply_form(comment_id, url, person_name) {
 {% endblock %}
 {% block body %}
 
-<h1>ScratchPad: {{pad}}</h1>
+<h1>Scratchpad: {{pad}}</h1>
 {% ifequal pad.author request.user %}
 <a href="{% url scratchpad-delete pad.id %}">Delete this scratchpad</a><br>
 {% endifequal %}

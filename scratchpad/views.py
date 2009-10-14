@@ -10,7 +10,7 @@ from django.template import RequestContext
 
 from muaccounts  import models as muamodels
 from scratchpad import models
-from scratchpad.forms import AddScratchPadForm, AddToScratchPad
+from scratchpad.forms import AddScratchpadForm, AddToScratchpad
 from todo.forms import AddListForm, AddItemForm, EditItemForm
 from todo import models as todomodels
 from threadedcomments import models as tmodels
@@ -25,11 +25,11 @@ def view_list(request):
     # get account scratchpads only if we have a muaccount!
     if getattr(request,"muaccount",False):
 
-        pads = models.ScratchPad.objects.filter(account=request.muaccount)
+        pads = models.Scratchpad.objects.filter(account=request.muaccount)
     else:
         pads = None
 
-    form = AddScratchPadForm()
+    form = AddScratchpadForm()
     return render_to_response("scratchpad/list_scratchpads.html", locals(), context_instance=RequestContext(request))
 
 @login_required
@@ -37,7 +37,7 @@ def new_scratchpad(request):
     """ Shows new scratchpad form and does the actual form processing """
     
     if request.POST:
-        form = AddScratchPadForm(request.POST)
+        form = AddScratchpadForm(request.POST)
         item = form.save(commit=False)
         item.account=request.muaccount
         item.author=request.user
@@ -53,7 +53,7 @@ def new_scratchpad(request):
         return HttpResponseRedirect(reverse('scratchpad-scratchpad_view',args=[item.id]))
 
 
-    form = AddScratchPadForm()
+    form = AddScratchpadForm()
     return render_to_response("scratchpad/new_scratchpad.html", locals(), context_instance=RequestContext(request))
 
 @login_required
@@ -75,10 +75,10 @@ def del_item(request, item_id):
         # get account scratchpads only if we have a muaccount!
         #if getattr(request,"muaccount",False):
 
-        #    pads = models.ScratchPad.objects.filter(account=request.muaccount)
+        #    pads = models.Scratchpad.objects.filter(account=request.muaccount)
         #else:
         #    pads = None
-        #form = AddScratchPadForm()
+        #form = AddScratchpadForm()
         
         #return render_to_response("scratchpad/confirmdel_scratchpad_item.html", locals(), context_instance=RequestContext(request))
 
@@ -87,29 +87,29 @@ def scratchpad_del(request, scratch_id):
     """ Delete a scratchpad """
 
     #if request.POST:
-    pad = get_object_or_404(models.ScratchPad,id=scratch_id)
+    pad = get_object_or_404(models.Scratchpad,id=scratch_id)
     pad.delete()
 
     return HttpResponseRedirect(reverse('scratchpad-list'))
 
     #else:
-        #pad = get_object_or_404(models.ScratchPad,id=scratch_id)
+        #pad = get_object_or_404(models.Scratchpad,id=scratch_id)
         #task_list = todomodels.Item.objects.filter(list=pad.tasks_list.id, list__account=request.muaccount, completed=0)
         # Get all scratchpads connected via muaccounts with this user
 
         # get account scratchpads only if we have a muaccount!
         #if getattr(request,"muaccount",False):
 
-            #pads = models.ScratchPad.objects.filter(account=request.muaccount)
+            #pads = models.Scratchpad.objects.filter(account=request.muaccount)
         #else:
             #pads = None
-        #form = AddScratchPadForm()
+        #form = AddScratchpadForm()
         #return render_to_response("scratchpad/confirmdel_scratchpad.html", locals(), context_instance=RequestContext(request))
 
 @login_required
 def scratchpad(request, scratch_id):
     """ Shows list items in a scratchpad """
-    pad = get_object_or_404(models.ScratchPad,id=scratch_id)
+    pad = get_object_or_404(models.Scratchpad,id=scratch_id)
     list = get_object_or_404(todomodels.List, slug=pad.tasks_list.slug)
     listid = list.id
 
@@ -118,10 +118,10 @@ def scratchpad(request, scratch_id):
     # get account scratchpads only if we have a muaccount!
     if getattr(request,"muaccount",False):
 
-        pads = models.ScratchPad.objects.filter(account=request.muaccount)
+        pads = models.Scratchpad.objects.filter(account=request.muaccount)
     else:
         pads = None
-    form = AddScratchPadForm()
+    form = AddScratchpadForm()
     
     thedate = datetime.datetime.now()
     created_date = "%s-%s-%s" % (thedate.year, thedate.month, thedate.day)
@@ -170,7 +170,7 @@ def scratchpad(request, scratch_id):
             item.title = request.POST['title']
 
             if request.POST['scratchpad_type'] == 'new':
-                spad = models.ScratchPad()
+                spad = models.Scratchpad()
                 spad.title = request.POST['new_scratchpad']
                 spad.author = request.user
                 spad.account = request.muaccount
@@ -186,7 +186,7 @@ def scratchpad(request, scratch_id):
                 item.scratchpad = spad
                 request.user.message_set.create(message="New Note added to '%s'" % spad.title)
             else:
-                item.scratchpad = models.ScratchPad.objects.get(id=request.POST['scratchpad'])
+                item.scratchpad = models.Scratchpad.objects.get(id=request.POST['scratchpad'])
                 request.user.message_set.create(message="New Note added to '%s'" % item.scratchpad.title)
 
             item.save()
@@ -200,7 +200,7 @@ def scratchpad(request, scratch_id):
                 comment.comment = strcomment
                 comment.save()
     
-    form2 = AddToScratchPad(None, request.muaccount)
+    form2 = AddToScratchpad(None, request.muaccount)
     comment = forms.CharField(widget=forms.Textarea).widget.render("comment","")
 
     return render_to_response("scratchpad/view_scratchpad.html", locals(), context_instance=RequestContext(request))
@@ -216,7 +216,7 @@ def add_to(request):
     if request.POST:
         data = request.POST['data']
 
-        form = AddToScratchPad(data, request.muaccount)
+        form = AddToScratchpad(data, request.muaccount)
         comment = forms.CharField(widget=forms.Textarea).widget.render("comment","")
 
         # Get all scratchpads connected via muaccounts with this user
@@ -224,11 +224,11 @@ def add_to(request):
         # get account scratchpads only if we have a muaccount!
         if getattr(request,"muaccount",False):
 
-            pads = models.ScratchPad.objects.filter(account=request.muaccount)
+            pads = models.Scratchpad.objects.filter(account=request.muaccount)
         else:
             pads = None
 
-        scrapform = AddScratchPadForm()
+        scrapform = AddScratchpadForm()
 
         return render_to_response("scratchpad/addto_scratchpad.html", locals())
     else:
@@ -245,7 +245,7 @@ def save(request):
 
         if request.POST['scratchpad_type'] == 'new':
             #print "es new"
-            spad = models.ScratchPad()
+            spad = models.Scratchpad()
             spad.title = request.POST['new_scratchpad']
             spad.author = request.user
             spad.account = request.muaccount
@@ -261,7 +261,7 @@ def save(request):
             item.scratchpad = spad
         else:
             #print "es select"
-            item.scratchpad = models.ScratchPad.objects.get(id=request.POST['scratchpad'])
+            item.scratchpad = models.Scratchpad.objects.get(id=request.POST['scratchpad'])
 
         item.save()
 
@@ -297,11 +297,11 @@ def item(request, item_id):
     # get account scratchpads only if we have a muaccount!
     if getattr(request,"muaccount",False):
 
-        pads = models.ScratchPad.objects.filter(account=request.muaccount)
+        pads = models.Scratchpad.objects.filter(account=request.muaccount)
     else:
         pads = None
 
-    scrapform = AddScratchPadForm()
+    scrapform = AddScratchpadForm()
     task_list = todomodels.Item.objects.filter(list=list.id, list__account=request.muaccount, completed=0)
 
     return render_to_response("scratchpad/view_scratchpad_item.html", locals(), context_instance=RequestContext(request))
