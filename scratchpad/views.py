@@ -110,8 +110,9 @@ def scratchpad_del(request, scratch_id):
 def scratchpad(request, scratch_id):
     """ Shows list items in a scratchpad """
     pad = get_object_or_404(models.Scratchpad,id=scratch_id)
-    list = get_object_or_404(todomodels.List, slug=pad.tasks_list.slug)
-    listid = list.id
+    list = None
+    if pad.tasks_list:
+        list = get_object_or_404(todomodels.List, slug=pad.tasks_list.slug)
 
     # Get all scratchpads connected via muaccounts with this user
 
@@ -126,7 +127,7 @@ def scratchpad(request, scratch_id):
     thedate = datetime.datetime.now()
     created_date = "%s-%s-%s" % (thedate.year, thedate.month, thedate.day)
     
-    task_list = todomodels.Item.objects.filter(list=list.id, list__account=request.muaccount, completed=0)
+#    task_list = todomodels.Item.objects.filter(list=list.id, list__account=request.muaccount, completed=0)
 
     if request.POST.getlist('add_task') :
         form1 = AddItemForm(list, request.muaccount, request.POST,initial={

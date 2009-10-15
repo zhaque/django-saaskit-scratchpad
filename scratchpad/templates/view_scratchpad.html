@@ -43,8 +43,10 @@ function hide_reply_form(comment_id, url, person_name) {
 {% endifequal %}
 <a href="{% url scratchpad-list%}">View scratchpads list</a>
 <hr>
+{% if pad.tasks_list %}
 <a href="{% url todo-incomplete_tasks pad.tasks_list.id pad.tasks_list.slug %}">View scratchpad tasks</a>
 <hr>
+{% endif %}
 
 {% for item in pad.item_set.all %}
 
@@ -63,8 +65,11 @@ function hide_reply_form(comment_id, url, person_name) {
 
 {% endfor %}
 <hr>
+{% if pad.tasks_list %}
 <a href="{% url todo-incomplete_tasks pad.tasks_list.id pad.tasks_list.slug %}">View scratchpad tasks</a>
-
+{% else %}
+<a href="{% url todo-not-available %}">View scratchpad tasks</a>
+{% endif %}
 
     <h3>Comments on This Scratchpad:</h3>
     {% get_threaded_comment_tree for pad as tree %}

@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^add/save/$', 'scratchpad.views.save',name="scratchpad-save"),
     url(r'^item/(?P<item_id>\d+)/$', 'scratchpad.views.item', name="scratchpad-item"),
     url(r'^item/(?P<item_id>\d+)/del$', 'scratchpad.views.del_item',name="scratchpad-item-delete"),
+    url(r'^not_available/$', direct_to_template, dict(template='not_available.html'), name="scratchpad-not-available"),
 
 
 

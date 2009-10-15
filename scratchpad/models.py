@@ -10,7 +10,7 @@ class Scratchpad(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User)
     account = models.ForeignKey(muamodels.MUAccount)
-    tasks_list = models.ForeignKey(todomodels.List)
+    tasks_list = models.ForeignKey(todomodels.List, null=True, blank=True)
 
     def __unicode__(self):
         return self.title
@@ -24,6 +24,8 @@ class Item(models.Model):
     scratchpad = models.ForeignKey(Scratchpad)
     title = models.CharField(max_length=200)
     notes = models.TextField()
+    createddate = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User)
 
     def __unicode__(self):
         return self.title
