@@ -1,15 +1,11 @@
                            Django Scratchpad
                            ==========================
 
-Author: Javier Der Derian <javierder@gmail.com>
-Date: 2009/08/17
-
-
 Django-scratchpad is an applitation for managing scratchpads in
 a multi-user way.
 This application needs:
-	MuAccounts
-	django-todo
+	django-muaccounts
+	django-saaskit-todo
 	django-threadedcomments
 	
 to be already installed.
@@ -146,16 +142,16 @@ Table of Contents
 
 7 Example code
 ~~~~~~~~~~~~~~
-  Example usage and templates are available as `django-scratchpad'
-  project at [http://github.com/CrowdSense/django-scratchpad/]
+  Example usage and templates are available as `django-saaskit-scratchpad'
+  project at [http://github.com/saas-kit/django-saaskit-scratchpad/]
 
 8 Integration with cs-kit
 ~~~~~~~~~~~~~~~~~~~~~~~~~
   No modifications have been done in cs-kit.
-  All integration was done in django-scratchpad with modifications
-  in django-todo and django-threaddedcomments
+  All integration was done in django-saaskit-scratchpad with modifications
+  in django-saaskit-todo and django-threaddedcomments
   
-  django-todo:
+  django-saaskit-todo:
   	* Template modifications:
   		* use body block instead of content block
   		* use head instead of extrahead
@@ -180,9 +176,3 @@ Table of Contents
   	  	   * threadedcomments_base.html
   	  	   	 * Extends base.main
   	  	   	 * Use body block instead of content block
- 
- 
-
-9 Bugs and omissions
-~~~~~~~~~~~~~~~~~~~~
- -----
